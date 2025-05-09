@@ -19,6 +19,7 @@
 - create a model folder models=>user.js
 - require mongoose in User model and create schema 
 - create an instance of user model by using an async function in app.js for signup api and add hardcoded data over there
+- validate function in user scema at the gender field will not run when you update the user it will only run when you create a new user if you want to enable it for updating user you have to explicitly allow to run a function by using =>runValidator: true by default it is off for updating the user
 
 
 

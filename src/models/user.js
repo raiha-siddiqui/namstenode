@@ -2,24 +2,36 @@ const mongoose= require('mongoose')
 
 const userSchema= new mongoose.Schema({
     firstName:{
-        type:String
+        type:String,
+        required: true,
+        
     },
     lastName:{
-        type:String
+        type:String,
     }, 
     age:{
-        type:Number
+        type:Number,
+        min:18
     },
      emailId:{
-        type:String
+        type:String,
+        required: true,
+        unique:true
     },
      password:{
-        type:String
+        type:String,
+        required: true,
     },
     gender:{
-        type:String
+        type:String,
+        validate(value){
+            if(!["male", "female", "others"].includes(value)){
+                throw new Error("gender data is not valid")
+            }
+        }
+       
     },
-})
+},{timestamps:true})
 
 const User= mongoose.model("User", userSchema)
 module.exports=User
