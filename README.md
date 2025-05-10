@@ -50,6 +50,8 @@
 - validate the token
 - Find user from db
 - we can also expires our cookies other than jwt token by send in response as a parameter expires:newDate(Date.now)+8*3600000   // meaning for 8 hours
+# Creating emthod in schema
+- creating schema methods is a good practice
 
 
 
