@@ -24,6 +24,33 @@
 
 #
 - install validator to validates schema or data
+- password should not be stored as a string in db they stored in hashed format or encrypted password
+# signup api validation
+- validation of data 
+       - create util folder and => validation.js file
+- encrypt password
+       - install bcrypt library  npm i bcrypt
+- store in db
+# signin api
+- extract email and pass from req body
+- find user from User model by emailId
+- if there is no user throw error
+- if user is present then compare password by bcrypt
+- if password comparison is correct then send response else throw error
+
+# Authentication in login api
+- in TCP/IP protocol you make the connection get the data and connection closed
+- after comparing the password by bcrypt it time to create JWT token 
+- then add token to cookie and send back response to user
+- for reading cookie we need a middleware which is cookie parser for example i login and the server generate a token and stored in a cookie whenever i do another request the cookie or token must go with that request for that we need moddleware to read the cookie first parse and then read
+- install cookie-parser => npm i cookie-parser
+- for creating token install jsonwebtoken pkg => npm i jsonwebtoken
+# Creating auth middleware which authenticate user
+- Read the token from cookie
+- validate the token
+- Find user from db
+- we can also expires our cookies other than jwt token by send in response as a parameter expires:newDate(Date.now)+8*3600000   // meaning for 8 hours
+
 
 
 

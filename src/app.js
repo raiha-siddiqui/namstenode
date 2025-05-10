@@ -1,22 +1,73 @@
 const express= require('express')
 const connectDb= require('./config/database')
 const User= require('./models/user')
+const {validateSignUpData}= require('./utils/validation')
+const bcrypt= require('bcrypt')
+const cookieParser= require("cookie-parser")
+const jwt= require('jsonwebtoken')
+const {userAuth}= require('./middlewares/auth')
 
 const app= express()
 
 app.use(express.json())
+app.use(cookieParser())
+
 
 
 app.post('/signup',async(req, res)=>{
+    try{
+        validateSignUpData(req)
+        const {firstName, lastName, emailId, password}=req.body
+        const hashPassword= await bcrypt.hash(password, 10)
 
-        const user = new User(req.body)
-        try{
+        const user = new User({
+            firstName,
+            lastName,
+            emailId,
+            password:hashPassword
+        })
+       
             await user.save()
             res.send("User added successfully")
         }
         catch(err){
-            res.status(400).send("error saving user"+ err.message)
+            res.status(400).send("error saving user "+ err.message)
         }
+})
+app.post('/login', async(req, res)=>{
+       try{
+               const {emailId, password}=req.body
+               const user= await User.findOne({emailId:emailId})
+               if(!user){
+                throw new Error("Invalid credentials")
+               }
+               const isPasswordValid= await bcrypt.compare(password, user.password)
+               if(isPasswordValid){
+                const token= await jwt.sign({_id:user._id}, "NAMASTE@NODE$000", {expiresIn: "7d"})
+                res.cookie("token",token, {expires:new Date(Date.now()+8*3600000)})
+                res.send("login successfull")
+               }
+               else{
+                throw new Error("Invalid credentials")
+               }
+       }catch(err){
+        res.status(400).send("Something went wrong")
+       }
+})
+app.get('/profile',userAuth,  async(req, res)=>{
+   try{
+      const user= req.user
+    res.send(user)
+   }catch(err){
+    res.status(400).send("Something went wrong")
+   }
+
+})
+app.post('/sendConnectionRequest', userAuth, async(req, res)=>{
+    const user= req.user
+    res.send(user.firstName +" sent connection request")
+    // res.send('connection request sent')
+
 })
 app.get("/user", async(req, res)=>{
    const userEmail= req.body.emailId
