@@ -1,8 +1,7 @@
 # DevTinder 
 # Steps to create a project
+
 # initialize the prject
-
-
 - npm init
 - create src folder src->app.js
 - install express => npm i express
@@ -50,11 +49,10 @@
 - validate the token
 - Find user from db
 - we can also expires our cookies other than jwt token by send in response as a parameter expires:newDate(Date.now)+8*3600000   // meaning for 8 hours
-# Creating emthod in schema
+# Creating method in schema
 - creating schema methods is a good practice
-
-
-
-
-
-
+# Group api's with epxressRouter
+- create a rotes folder in src 
+- then create auth.js file for authentication api sign up, signin, logout
+  - in auth.js file create an instance of express.Router() => const authRouter= express.Router()
+  - add all the api's related to auth  app is coming from express() and rouet is from express.Router()
